@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: unused_element
+
 part of 'authors_remote_data_source.dart';
 
 // **************************************************************************
@@ -13,9 +15,7 @@ class _AuthorsRemoteRetrofitDataSource
   _AuthorsRemoteRetrofitDataSource(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'https://my-json-server.typicode.com/adamsmaka/json-demo/';
-  }
+  });
 
   final Dio _dio;
 
