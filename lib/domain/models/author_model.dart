@@ -4,12 +4,13 @@ part 'author_model.g.dart';
 
 @freezed
 class AuthorModel with _$AuthorModel {
-  const AuthorModel._();  // linijka z prywatnym konstruktorem, ponieważ getter z dołu nie działa bez konstruktora
+  const AuthorModel._(); // linijka z prywatnym konstruktorem, ponieważ getter z dołu nie działa bez konstruktora
+  @JsonSerializable(fieldRename: FieldRename.snake)
   factory AuthorModel(
     int id,
     String picture,
-    @JsonKey(name: 'first_name') String firstName,
-    @JsonKey(name: 'last_name') String lastName,
+    String firstName,
+    String lastName,
   ) = _AuthorModel;
 
   String get name {
