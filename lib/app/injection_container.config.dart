@@ -12,7 +12,7 @@
 import 'package:dio/dio.dart' as _i3;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
-import 'package:user_articles/app/injection_container.dart' as _i10;
+import 'package:user_articles/app/injection_container.dart' as _i11;
 import 'package:user_articles/data/remote_data_sources/articles_remote_data_source.dart'
     as _i4;
 import 'package:user_articles/data/remote_data_sources/authors_remote_data_source.dart'
@@ -21,8 +21,10 @@ import 'package:user_articles/domain/repositories/articles_repository.dart'
     as _i5;
 import 'package:user_articles/domain/repositories/authors_repository.dart'
     as _i7;
-import 'package:user_articles/features/articles/cubit/articles_cubit.dart'
+import 'package:user_articles/features/articles/cubit/article_details_cubit.dart'
     as _i9;
+import 'package:user_articles/features/articles/cubit/articles_cubit.dart'
+    as _i10;
 import 'package:user_articles/features/home/cubit/home_cubit.dart' as _i8;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -53,10 +55,12 @@ extension GetItInjectableX on _i1.GetIt {
         remoteDataSource: gh<_i6.AuthorsRemoteRetrofitDataSource>()));
     gh.factory<_i8.HomeCubit>(
         () => _i8.HomeCubit(authorsRepository: gh<_i7.AuthorsRepository>()));
-    gh.factory<_i9.ArticlesCubit>(() =>
-        _i9.ArticlesCubit(articlesRepository: gh<_i5.ArticlesRepository>()));
+    gh.factory<_i9.ArticleDetailsCubit>(() => _i9.ArticleDetailsCubit(
+        articlesRepository: gh<_i5.ArticlesRepository>()));
+    gh.factory<_i10.ArticlesCubit>(() =>
+        _i10.ArticlesCubit(articlesRepository: gh<_i5.ArticlesRepository>()));
     return this;
   }
 }
 
-class _$RegisterModule extends _i10.RegisterModule {}
+class _$RegisterModule extends _i11.RegisterModule {}

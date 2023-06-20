@@ -3,40 +3,41 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_articles/app/core/enums.dart';
 import 'package:user_articles/app/injection_container.dart';
 import 'package:user_articles/domain/models/article_model.dart';
-import 'package:user_articles/domain/models/author_model.dart';
-import 'package:user_articles/features/articles/cubit/articles_cubit.dart';
-import 'package:user_articles/features/articles/page/article_details_page.dart';
+import 'package:user_articles/features/articles/cubit/article_details_cubit.dart';
 
-class ArticlesPage extends StatelessWidget {
-  const ArticlesPage({
+class ArticleDetailsPage extends StatelessWidget {
+  const ArticleDetailsPage({
     Key? key,
-    required this.author,
+    required this.id,
+    required this.title,
+    required this.picture,
+    required this.articles,
   }) : super(key: key);
 
-  final AuthorModel author;
+  final ArticleModel id;
+  final ArticleModel title;
+  final ArticleModel picture;
+  final ArticleModel articles;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(author.name),
+        title: Text(articles.title),
       ),
-      body: BlocProvider<ArticlesCubit>(
+      body: BlocProvider<ArticleDetailsCubit>(
         create: (context) => getIt()
           ..fetchData(
-            authorId: author.id,
-          ),
+              articleId: articles.id,
+              articleTitle: articles.title,
+              articlePicture: articles.picture),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(author.picture),
-                radius: 50,
-              ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.0),
             ),
             Expanded(
-              child: BlocBuilder<ArticlesCubit, ArticlesState>(
+              child: BlocBuilder<ArticleDetailsCubit, ArticleDetailsState>(
                 builder: (context, state) {
                   switch (state.status) {
                     case Status.initial:
@@ -53,14 +54,12 @@ class ArticlesPage extends StatelessWidget {
                           child: Text('No articles found'),
                         );
                       }
-                      return ListView(
-                        children: [
-                          for (final author in state.results)
-                            _ArticleItemWidget(
-                              model: author,
-                            ),
-                        ],
-                      );
+                      return ListView(children: [
+                        for (final author in state.results)
+                          _ArticleItemWidget(
+                            model: author,
+                          ),
+                      ]);
                     case Status.error:
                       return Center(
                         child: Text(
@@ -91,45 +90,36 @@ class _ArticleItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 10,
-      ),
-      child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => ArticleDetailsPage(
-                id: model,
-                title: model,
-                picture: model,
-                articles: model,
-              ),
-            ),
-          );
-        },
-        child: Container(
+    return Column(
+      children: [
+        Image.network(model.picture),
+        Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
-            vertical: 20,
+            vertical: 10,
           ),
-          color: Colors.black12,
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(model.content),
-              ),
-              const SizedBox(width: 10),
-              const Icon(
-                Icons.arrow_right,
-                color: Colors.black,
-                size: 20,
-              ),
-            ],
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 20,
+            ),
+            color: Colors.black12,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(model.content),
+                ),
+                const SizedBox(width: 10),
+                const Icon(
+                  Icons.arrow_right,
+                  color: Colors.black,
+                  size: 20,
+                ),
+              ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
